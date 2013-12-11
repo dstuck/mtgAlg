@@ -1,0 +1,20 @@
+#include "Forest.h"
+#include "Swamp.h"
+#include "Island.h"
+#include "Mountain.h"
+#include "Plains.h"
+		case CardList::Forest:
+			theCard = new Forest();
+			break;
+		case CardList::Swamp:
+			theCard = new Swamp();
+			break;
+		case CardList::Island:
+			theCard = new Island();
+			break;
+		case CardList::Mountain:
+			theCard = new Mountain();
+			break;
+		case CardList::Plains:
+			theCard = new Plains();
+			break;

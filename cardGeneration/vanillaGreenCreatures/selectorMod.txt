@@ -1,0 +1,60 @@
+#include "NorwoodRanger.h"
+#include "GrizzlyBears.h"
+#include "NessianCourser.h"
+#include "RumblingBaloth.h"
+#include "NettleSwine.h"
+#include "SpinedWurm.h"
+#include "PheresBandCentaurs.h"
+#include "RumblingBaloth.h"
+#include "CrawWurm.h"
+#include "VastwoodGorger.h"
+#include "AxebaneStag.h"
+#include "ScaledWurm.h"
+		case CardList::NorwoodRanger:
+			theCard = new NorwoodRanger();
+			break;
+		case CardList::GrizzlyBears:
+			theCard = new GrizzlyBears();
+			break;
+		case CardList::NessianCourser:
+			theCard = new NessianCourser();
+			break;
+		case CardList::RumblingBaloth:
+			theCard = new RumblingBaloth();
+			break;
+		case CardList::NettleSwine:
+			theCard = new NettleSwine();
+			break;
+		case CardList::SpinedWurm:
+			theCard = new SpinedWurm();
+			break;
+		case CardList::PheresBandCentaurs:
+			theCard = new PheresBandCentaurs();
+			break;
+		case CardList::RumblingBaloth:
+			theCard = new RumblingBaloth();
+			break;
+		case CardList::CrawWurm:
+			theCard = new CrawWurm();
+			break;
+		case CardList::VastwoodGorger:
+			theCard = new VastwoodGorger();
+			break;
+		case CardList::AxebaneStag:
+			theCard = new AxebaneStag();
+			break;
+		case CardList::ScaledWurm:
+			theCard = new ScaledWurm();
+			break;
+	nameToIndex["Norwood Ranger"] = 5;
+	nameToIndex["Grizzly Bears"] = 6;
+	nameToIndex["Nessian Courser"] = 7;
+	nameToIndex["Rumbling Baloth"] = 8;
+	nameToIndex["Nettle Swine"] = 9;
+	nameToIndex["Spined Wurm"] = 10;
+	nameToIndex["Pheres-Band Centaurs"] = 11;
+	nameToIndex["Rumbling Baloth"] = 12;
+	nameToIndex["Craw Wurm"] = 13;
+	nameToIndex["Vastwood Gorger"] = 14;
+	nameToIndex["Axebane Stag"] = 15;
+	nameToIndex["Scaled Wurm"] = 16;

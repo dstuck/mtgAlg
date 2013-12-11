@@ -1,0 +1,65 @@
+#include "FlyingMen.h"
+#include "KrakenHatchling.h"
+#include "CoralMerfolk.h"
+#include "SeacoastDrake.h"
+#include "HornedTurtle.h"
+#include "PhantomWarrior.h"
+#include "WindDrake.h"
+#include "BlindPhantasm.h"
+#include "AzureDrake.h"
+#include "SnappingDrake.h"
+#include "AirElemental.h"
+#include "SkylinePredator.h"
+#include "GoliathSphinx.h"
+		case CardList::FlyingMen:
+			theCard = new FlyingMen();
+			break;
+		case CardList::KrakenHatchling:
+			theCard = new KrakenHatchling();
+			break;
+		case CardList::CoralMerfolk:
+			theCard = new CoralMerfolk();
+			break;
+		case CardList::SeacoastDrake:
+			theCard = new SeacoastDrake();
+			break;
+		case CardList::HornedTurtle:
+			theCard = new HornedTurtle();
+			break;
+		case CardList::PhantomWarrior:
+			theCard = new PhantomWarrior();
+			break;
+		case CardList::WindDrake:
+			theCard = new WindDrake();
+			break;
+		case CardList::BlindPhantasm:
+			theCard = new BlindPhantasm();
+			break;
+		case CardList::AzureDrake:
+			theCard = new AzureDrake();
+			break;
+		case CardList::SnappingDrake:
+			theCard = new SnappingDrake();
+			break;
+		case CardList::AirElemental:
+			theCard = new AirElemental();
+			break;
+		case CardList::SkylinePredator:
+			theCard = new SkylinePredator();
+			break;
+		case CardList::GoliathSphinx:
+			theCard = new GoliathSphinx();
+			break;
+	nameToIndex["Flying Men"] = 17;
+	nameToIndex["Kraken Hatchling"] = 18;
+	nameToIndex["Coral Merfolk"] = 19;
+	nameToIndex["Seacoast Drake"] = 20;
+	nameToIndex["Horned Turtle"] = 21;
+	nameToIndex["Phantom Warrior"] = 22;
+	nameToIndex["Wind Drake"] = 23;
+	nameToIndex["Blind Phantasm"] = 24;
+	nameToIndex["Azure Drake"] = 25;
+	nameToIndex["Snapping Drake"] = 26;
+	nameToIndex["Air Elemental"] = 27;
+	nameToIndex["Skyline Predator"] = 28;
+	nameToIndex["Goliath Sphinx"] = 29;

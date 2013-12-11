@@ -1,0 +1,5 @@
+		Forest=376341
+		Swamp=376534
+		Island=376376
+		Mountain=376418
+		Plains=376451
