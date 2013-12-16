@@ -25,8 +25,9 @@ SeacoastDrake::SeacoastDrake() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=370617&type=card";
 	mana[colors::O]+=1;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 SeacoastDrake::~SeacoastDrake() {

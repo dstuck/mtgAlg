@@ -23,8 +23,9 @@ BlindPhantasm::BlindPhantasm() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=126143&type=card";
 	mana[colors::O]+=2;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 BlindPhantasm::~BlindPhantasm() {

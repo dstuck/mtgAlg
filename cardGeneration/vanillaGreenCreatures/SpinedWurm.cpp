@@ -25,8 +25,9 @@ SpinedWurm::SpinedWurm() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=205123&type=card";
 	mana[colors::O]+=4;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 SpinedWurm::~SpinedWurm() {

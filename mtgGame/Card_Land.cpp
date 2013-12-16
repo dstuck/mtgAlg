@@ -7,6 +7,7 @@
 
 #include "headers/Card_Land.h"
 
+
 Card_Land::Card_Land() {
 	// TODO Auto-generated constructor stub
 	DefaultInit();
@@ -17,43 +18,13 @@ Card_Land::~Card_Land() {
 }
 
 void Card_Land::DefaultInit() {
-	isCreature=false;
+	KeywordVanilla();
 	isLand=true;
-	isInstant=false;
-	isSorcery=false;
-	isEnchantment=false;
-	isArtifact=false;
-	usesStack=false;
-	isInst=false;
-	mana[colors::W]=0;
-	mana[colors::U]=0;
-	mana[colors::B]=0;
-	mana[colors::R]=0;
-	mana[colors::G]=0;
-	mana[colors::O]=0;
+	defaultValue=1;
 }
 
 void Card_Land::Play() {
 	this->MoveLoc(this->thePlayer->bf);
-}
-
-void Card_Land::KeywordVanilla() {
-	isCreature=false;
-	isLand=true;
-	isBasic=false;
-	isInstant=false;
-	isSorcery=false;
-	isEnchantment=false;
-	isArtifact=false;
-	isLegendary=false;
-	power = 0;
-	toughness = 0;
-	mana[colors::W]=0;
-	mana[colors::U]=0;
-	mana[colors::B]=0;
-	mana[colors::R]=0;
-	mana[colors::G]=0;
-	mana[colors::O]=0;
 }
 
 bool Card_Land::CanPay(bool isSorc) {

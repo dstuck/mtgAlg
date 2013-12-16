@@ -26,8 +26,9 @@ NessianCourser::NessianCourser() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=373581&type=card";
 	mana[colors::O]+=2;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 NessianCourser::~NessianCourser() {

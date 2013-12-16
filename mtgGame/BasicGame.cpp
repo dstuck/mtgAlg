@@ -114,14 +114,21 @@ void BasicGame::PrintGameState() {
 	if(abs(noisy)>1) {
 		cout << "Turn " << turnNum/2+1 << "." << (turnNum%2)*5 << endl;
 	}
-	players[0]->PrintGameState(true);
-	cout << "        --------------------------        " << endl;
 	if(noisy>0) {
-		players[1]->PrintGameState(false);
+		players[0]->PrintGameState(true);
 	}
 	else if(noisy<0) {
-		players[1]->PrintGameState(false, true);
+		players[0]->PrintGameState(true, true);
 	}
+//	players[0]->PrintGameState(true);
+	cout << "        --------------------------        " << endl;
+	players[1]->PrintGameState(false);
+//	if(noisy>0) {
+//		players[1]->PrintGameState(false);
+//	}
+//	else if(noisy<0) {
+//		players[1]->PrintGameState(false, true);
+//	}
 }
 
 

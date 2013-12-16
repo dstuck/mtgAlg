@@ -25,8 +25,9 @@ AxebaneStag::AxebaneStag() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=265383&type=card";
 	mana[colors::O]+=6;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 AxebaneStag::~AxebaneStag() {

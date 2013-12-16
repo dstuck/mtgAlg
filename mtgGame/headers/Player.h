@@ -14,22 +14,22 @@
 #include "Graveyard.h"
 #include "Library.h"
 #include "Exile.h"
-#include <iostream>
-#include <iterator>
 #include "Colors.h"
 #include "debug.h"
-#include "Planeswalker.h"
 #include "StateBasedActionQueue.h"
 #include "StateBasedAction.h"
 #include "Controller.h"
-
+#include "Planeswalker.h"
+#include "Target.h"
+#include <iostream>
+#include <iterator>
 
 class SBA_NoLife;
 class SBA_Milled;
 class Card;
 class Controller;
 
-class Player: public Planeswalker {
+class Player: public Planeswalker, public Target {
 public:
 	Player();
 	Player(Controller*);
@@ -52,6 +52,8 @@ public:
 	bool HasMana(int*);
 	void PayMana(int*);
 	void TakeDamage(int);
+	bool IsTargetable(Player*);
+	bool IsCard();
 
 	Controller * control;
 	Hand * hand;

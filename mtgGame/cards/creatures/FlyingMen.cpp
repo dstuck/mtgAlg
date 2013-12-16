@@ -24,8 +24,9 @@ FlyingMen::FlyingMen() {
 	cardNumber = 20;
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=107291&type=card";
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 FlyingMen::~FlyingMen() {

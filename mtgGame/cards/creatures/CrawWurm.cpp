@@ -24,9 +24,11 @@ CrawWurm::CrawWurm() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=189903&type=card";
 	mana[colors::O]+=4;
 	mana[colors::G]++;
+	color[colors::G] = true;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 CrawWurm::~CrawWurm() {

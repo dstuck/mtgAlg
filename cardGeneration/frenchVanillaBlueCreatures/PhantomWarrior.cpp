@@ -26,9 +26,11 @@ PhantomWarrior::PhantomWarrior() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=370650&type=card";
 	mana[colors::O]+=1;
 	mana[colors::U]++;
+	color[colors::U] = true;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 PhantomWarrior::~PhantomWarrior() {

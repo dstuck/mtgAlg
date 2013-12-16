@@ -101,7 +101,7 @@ void Card::KeywordVanilla() {
 	flying = false;
 	intimidate = false;
 	unblockable = false;
-	isCreature=true;
+	isCreature=false;
 	isLand=false;
 	isBasic=false;
 	isInstant=false;
@@ -117,6 +117,16 @@ void Card::KeywordVanilla() {
 	mana[colors::R]=0;
 	mana[colors::G]=0;
 	mana[colors::O]=0;
+	color[colors::W]=false;
+	color[colors::U]=false;
+	color[colors::B]=false;
+	color[colors::R]=false;
+	color[colors::G]=false;
+	color[colors::O]=false;
+	defaultValue = cmc;
+
+	tapped=false;
+        summoningSick=true;
 }
 
 void Card::SetVanillaVariables() {
@@ -217,7 +227,7 @@ void Card::Die() {
 
 bool Card::DefaultCheckPay(bool isSorc) {
 	if(!isSorc) {
-		if(!isInst) {
+		if(!instantSpeed) {
 			cout << "Can't cast sorceries at instant speed!" << endl;
 			return false;
 		}
@@ -232,5 +242,18 @@ bool Card::DefaultCheckPay(bool isSorc) {
 
 }
 
+bool Card::IsTargetable(Player* targeter) {
+	if(shroud) {
+		return false;
+	}
+	if(hexproof && targeter!= thePlayer) {
+		return false;
+	}
+	return true;
+}
+
+bool Card::IsCard() {
+	return true;
+}
 
 

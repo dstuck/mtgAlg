@@ -26,8 +26,9 @@ PheresBandCentaurs::PheresBandCentaurs() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=373657&type=card";
 	mana[colors::O]+=4;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 PheresBandCentaurs::~PheresBandCentaurs() {

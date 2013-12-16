@@ -1,0 +1,5 @@
+#include "Swamp.h"
+		case CardList::Swamp:
+			theCard = new Swamp();
+			break;
+	nameToIndex["Swamp"] = 0;

@@ -47,16 +47,6 @@ void Player::Init() {
 	maxMana[colors::O]=0;
 	ResetMana();
 	landsToPlay = 1;
-
-//	Haven't necessarily initialized control yet!
-////	Get decks and initialize cards
-//	lib->cardVec = control->GetDeck();
-//	for(int j=0; j<lib->cardVec.size(); j++) {
-//		lib->cardVec[j]->curLoc = lib;
-//		lib->cardVec[j]->thePlayer = this;
-//	}
-//	Shuffle();
-
 }
 
 void Player::ResetPlayer() {
@@ -293,5 +283,14 @@ void Player::TakeDamage(int damage) {
 		sbaQueue->AddSBA(new SBA_NoLife(this));
 	}
 }
+
+bool Player::IsTargetable(Player* targeter) {
+	return true;
+}
+
+bool Player::IsCard() {
+	return false;
+}
+
 
 

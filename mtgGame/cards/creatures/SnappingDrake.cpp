@@ -25,8 +25,9 @@ SnappingDrake::SnappingDrake() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=190163&type=card";
 	mana[colors::O]+=3;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 SnappingDrake::~SnappingDrake() {

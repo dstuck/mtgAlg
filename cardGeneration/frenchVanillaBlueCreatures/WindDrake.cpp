@@ -25,8 +25,9 @@ WindDrake::WindDrake() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=369037&type=card";
 	mana[colors::O]+=2;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 WindDrake::~WindDrake() {

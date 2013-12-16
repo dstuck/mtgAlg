@@ -4,6 +4,7 @@
 	RumblingBaloth,
 	NettleSwine,
 	SpinedWurm,
+	HollowhengeBeast,
 	PheresBandCentaurs,
 	RumblingBaloth,
 	CrawWurm,

@@ -4,6 +4,7 @@
 #include "RumblingBaloth.h"
 #include "NettleSwine.h"
 #include "SpinedWurm.h"
+#include "HollowhengeBeast.h"
 #include "PheresBandCentaurs.h"
 #include "RumblingBaloth.h"
 #include "CrawWurm.h"
@@ -27,6 +28,9 @@
 			break;
 		case CardList::SpinedWurm:
 			theCard = new SpinedWurm();
+			break;
+		case CardList::HollowhengeBeast:
+			theCard = new HollowhengeBeast();
 			break;
 		case CardList::PheresBandCentaurs:
 			theCard = new PheresBandCentaurs();
@@ -52,9 +56,10 @@
 	nameToIndex["Rumbling Baloth"] = 8;
 	nameToIndex["Nettle Swine"] = 9;
 	nameToIndex["Spined Wurm"] = 10;
-	nameToIndex["Pheres-Band Centaurs"] = 11;
-	nameToIndex["Rumbling Baloth"] = 12;
-	nameToIndex["Craw Wurm"] = 13;
-	nameToIndex["Vastwood Gorger"] = 14;
-	nameToIndex["Axebane Stag"] = 15;
-	nameToIndex["Scaled Wurm"] = 16;
+	nameToIndex["Hollowhenge Beast"] = 11;
+	nameToIndex["Pheres-Band Centaurs"] = 12;
+	nameToIndex["Rumbling Baloth"] = 13;
+	nameToIndex["Craw Wurm"] = 14;
+	nameToIndex["Vastwood Gorger"] = 15;
+	nameToIndex["Axebane Stag"] = 16;
+	nameToIndex["Scaled Wurm"] = 17;

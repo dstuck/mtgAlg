@@ -37,18 +37,21 @@ public:
 
 	double* GetBoardVec(Player*,double*);
 	double AssessGameState(double*, double*, double, double);
-	vector<Card*> ProposeAttacks(Player*, Player*, double&);
-	vector<Card*> ProposeBlocks(vector<Card*>, Player*, Player*, double&);
+	double ModifyByLife(double, double);
+	vector<Card*> ProposeAttacks(Player*, Player*, double&, int=0);
+	vector<Card*> ProposeBlocks(vector<Card*>, Player*, Player*, double&,int=0,bool=false);
 	vector<int> ProposeBlockOrder(Card*,vector<Card*>, Player*, Player*, double&);
 //	Predict results of combat of attacker with blockers and modify attackerState and blockerState with the result return false if no change
-	bool PredictDamage(Card*,vector<Card*>,double*,double*,double*);
-	double ModifyByLife(double, double);
+	bool PredictDamage(Card*,vector<Card*>,double*,double*,int*);
 
-	double GenerateAttacks(vector<bool>, int, int, double&, vector<bool>*, double*, double*, vector<Card*>,Player*,Player*);
-	double GenerateBlocks(vector<vector<int> >, int, int, double&, vector<vector<int> >*, double*, double*, vector<Card*>, vector<Card*>,Player*,Player*);
+	void PredictCrackback(Player*,Player*,double*,double*,vector<Card*>,int,double&);
+	double GenerateAttacks(vector<bool>, int, int, double&, vector<bool>*, double*, double*, vector<Card*>,Player*,Player*,int=0);
+	double GenerateBlocks(vector<vector<int> >, int, int, double&, vector<vector<int> >*, double*, double*, vector<Card*>, vector<Card*>,Player*,Player*,int=0);
 	double PermuteBlocks(vector<int>, int, int, double&, vector<int>*, vector<int>, vector<int>, double*, double*, Card*, vector<Card*>,Player*,Player*);
+	Player* BoardToPlayer(double*, int*, int);
+
 	vector<Card*> LandsInHand();
-	vector<Card*> LandsOnTable();
+	vector<Card*> LandsOnTable(Player*);
 	vector<Card*> NonLandsInHand();
 	vector<Card*> CastableCreatures();
 	vector<Card*> GetPotentialAttackers(Player*);

@@ -24,8 +24,9 @@ NorwoodRanger::NorwoodRanger() {
 	cardNumber = 260;
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=83188&type=card";
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 NorwoodRanger::~NorwoodRanger() {

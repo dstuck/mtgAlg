@@ -19,7 +19,7 @@ class Card_Creature: public Card {
 public:
 	Card_Creature();
 	virtual ~Card_Creature();
-	void InitDefault();
+	void DefaultInit();
 	virtual string GetImage();
 	virtual void Play();
 	virtual bool Pay(bool);

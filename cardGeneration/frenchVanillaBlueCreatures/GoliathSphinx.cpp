@@ -25,9 +25,11 @@ GoliathSphinx::GoliathSphinx() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=197153&type=card";
 	mana[colors::O]+=5;
 	mana[colors::U]++;
+	color[colors::U] = true;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 GoliathSphinx::~GoliathSphinx() {

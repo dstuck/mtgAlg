@@ -25,8 +25,9 @@ AzureDrake::AzureDrake() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=204984&type=card";
 	mana[colors::O]+=3;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 AzureDrake::~AzureDrake() {

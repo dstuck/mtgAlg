@@ -24,8 +24,9 @@ ScaledWurm::ScaledWurm() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=83272&type=card";
 	mana[colors::O]+=7;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 ScaledWurm::~ScaledWurm() {

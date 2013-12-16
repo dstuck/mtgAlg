@@ -25,8 +25,9 @@ GrizzlyBears::GrizzlyBears() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129586&type=card";
 	mana[colors::O]+=1;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 GrizzlyBears::~GrizzlyBears() {

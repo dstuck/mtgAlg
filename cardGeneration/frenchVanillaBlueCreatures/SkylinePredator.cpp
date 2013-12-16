@@ -27,9 +27,11 @@ SkylinePredator::SkylinePredator() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=289212&type=card";
 	mana[colors::O]+=4;
 	mana[colors::U]++;
+	color[colors::U] = true;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 SkylinePredator::~SkylinePredator() {

@@ -9,22 +9,23 @@
 #include "SBA_Destroyed.h"
 
 Card_Creature::Card_Creature() {
-	InitDefault();
+	DefaultInit();
 }
 
 Card_Creature::~Card_Creature() {
 	// TODO Auto-generated destructor stub
 }
 
-void Card_Creature::InitDefault() {
+void Card_Creature::DefaultInit() {
+	isCreature=true;
 	usesStack=true;
 	if(!flash) {
-		isInst=false;
+		instantSpeed=false;
 	}
 	else {
-		isInst=true;
+		instantSpeed=true;
 	}
-	regenerating = false;
+	regenerating = 0;
 	SetVanillaVariables();
 }
 

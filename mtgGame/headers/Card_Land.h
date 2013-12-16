@@ -17,9 +17,6 @@ public:
 	Card_Land();
 	virtual ~Card_Land();
 	void DefaultInit();
-//	virtual string GetName()=0;
-//	virtual vector<string> GetSubtype()=0;
-	void KeywordVanilla();
 	virtual void Play();
 	virtual bool Pay(bool);
 	virtual bool CanPay(bool);

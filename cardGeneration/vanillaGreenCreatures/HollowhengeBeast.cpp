@@ -22,21 +22,15 @@ HollowhengeBeast::HollowhengeBeast() {
 	rarity = "Common";
 	cardNumber = 118;
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=262868&type=card";
+	mana[colors::O]+=3;
 	mana[colors::G]++;
+	color[colors::G] = true;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 HollowhengeBeast::~HollowhengeBeast() {
-}
-
-string HollowhengeBeast::GetImage() {
-	if(!tapped) {
-		return "|5/5|";
-	}
-	else {
-		return "\\5/5\\";
-	}
 }
 

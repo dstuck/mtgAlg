@@ -23,8 +23,9 @@ KrakenHatchling::KrakenHatchling() {
 	cardNumber = 58;
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=279699&type=card";
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 KrakenHatchling::~KrakenHatchling() {

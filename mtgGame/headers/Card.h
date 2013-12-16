@@ -14,12 +14,14 @@
 #include <vector>
 #include <iostream>
 #include "Playable.h"
+#include "Target.h"
 //#include "CardList.h"
 using namespace std;
 
 class Planeswalker;
+class Player;
 
-class Card: public Playable {
+class Card: public Playable, public Target {
 public:
 	Card();
 	virtual ~Card();
@@ -33,9 +35,9 @@ public:
 	void MoveLoc(Location*);
 	virtual void ResetAll();
 	virtual void ResetEOT();
-	virtual void Play()=0;
-	virtual bool Pay(bool)=0;
-	virtual bool CanPay(bool)=0;
+//	virtual void Play()=0;
+//	virtual bool Pay(bool)=0;
+//	virtual bool CanPay(bool)=0;
 	bool DefaultCheckPay(bool);
 
 //	CreatureType functions
@@ -51,9 +53,12 @@ public:
 	virtual void TakeDamage(int);
 	virtual void Destroy();
 	virtual void Die();
+	bool IsTargetable(Player*);
+	bool IsCard();
 
 
 	int mana[6];
+	bool color[6];
 	bool tapped;
 	Location* curLoc;
 
@@ -61,6 +66,7 @@ public:
 	string name;
 //	int mana[6];
 	int cmc;
+	double defaultValue;
 	bool isCreature;
 	bool isLand;
 	bool isBasic;

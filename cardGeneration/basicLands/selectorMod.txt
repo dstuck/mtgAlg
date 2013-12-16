@@ -18,3 +18,8 @@
 		case CardList::Plains:
 			theCard = new Plains();
 			break;
+	nameToIndex["Forest"] = 0;
+	nameToIndex["Swamp"] = 1;
+	nameToIndex["Island"] = 2;
+	nameToIndex["Mountain"] = 3;
+	nameToIndex["Plains"] = 4;

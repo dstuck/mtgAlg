@@ -19,7 +19,7 @@ public:
 	virtual bool Pay(bool)=0;
 	virtual bool CanPay(bool)=0;
 
-	bool isInst;
+	bool instantSpeed;
 	bool usesStack;
 	Player* thePlayer;
 };

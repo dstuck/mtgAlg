@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../Battlefield.cpp \
 ../Card.cpp \
 ../Card_Creature.cpp \
+../Card_Instant.cpp \
 ../Card_Land.cpp \
 ../Controller.cpp \
 ../Exile.cpp \
@@ -26,6 +27,7 @@ CPP_SRCS += \
 ../SBA_NoLife.cpp \
 ../StateBasedAction.cpp \
 ../StateBasedActionQueue.cpp \
+../Target.cpp \
 ../TestController.cpp \
 ../TestControllerv2.cpp 
 
@@ -38,6 +40,7 @@ OBJS += \
 ./Battlefield.o \
 ./Card.o \
 ./Card_Creature.o \
+./Card_Instant.o \
 ./Card_Land.o \
 ./Controller.o \
 ./Exile.o \
@@ -57,6 +60,7 @@ OBJS += \
 ./SBA_NoLife.o \
 ./StateBasedAction.o \
 ./StateBasedActionQueue.o \
+./Target.o \
 ./TestController.o \
 ./TestControllerv2.o \
 ./main.o 
@@ -66,6 +70,7 @@ CPP_DEPS += \
 ./Battlefield.d \
 ./Card.d \
 ./Card_Creature.d \
+./Card_Instant.d \
 ./Card_Land.d \
 ./Controller.d \
 ./Exile.d \
@@ -84,6 +89,7 @@ CPP_DEPS += \
 ./SBA_NoLife.d \
 ./StateBasedAction.d \
 ./StateBasedActionQueue.d \
+./Target.d \
 ./TestController.d \
 ./TestControllerv2.d 
 

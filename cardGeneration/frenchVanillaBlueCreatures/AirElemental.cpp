@@ -25,9 +25,11 @@ AirElemental::AirElemental() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=221985&type=card";
 	mana[colors::O]+=3;
 	mana[colors::U]++;
+	color[colors::U] = true;
 	mana[colors::U]++;
+	color[colors::U] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 AirElemental::~AirElemental() {

@@ -14,7 +14,6 @@ class HollowhengeBeast: public Card_Creature {
 public:
 	HollowhengeBeast();
 	virtual ~HollowhengeBeast();
-	string GetImage();
 };
 
 #endif /* HOLLOWHENGEBEAST_H_ */

@@ -25,8 +25,9 @@ VastwoodGorger::VastwoodGorger() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=279992&type=card";
 	mana[colors::O]+=5;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 VastwoodGorger::~VastwoodGorger() {

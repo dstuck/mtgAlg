@@ -25,8 +25,9 @@ NettleSwine::NettleSwine() {
 	image = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=239978&type=card";
 	mana[colors::O]+=3;
 	mana[colors::G]++;
+	color[colors::G] = true;
 
-	InitDefault();
+	DefaultInit();
 }
 
 NettleSwine::~NettleSwine() {

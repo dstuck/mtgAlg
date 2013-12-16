@@ -72,42 +72,12 @@ Playable * TestControllerv2::MakePlay(bool isSorc) {
 }
 
 vector<Card*> TestControllerv2::MakeAttacks() {
-//	vector<Card*> attacking;
-//	vector<Card*> potAttacks;
-//	potAttacks = GetPotentialAttackers();
-////	for(int i=0; i<potAttacks.size(); i++) {
-////		if(potAttacks[i]->CanAttack()) {
-////			attacking.push_back(potAttacks[i]);
-////		}
-////	}
-//	if(potAttacks.size() == 0) {
-//		return attacking;
-//	}
-//	vector<bool> isAttacking;
-//	for(int i=0; i< potAttacks.size(); i++) {
-//		isAttacking.push_back(false);
-//	}
-//	vector<bool> bestAttacks;
-//	double* myBoard = new double[CardList::size];
-//	double* oppBoard = new double[CardList::size];
-//	GetBoardVec(myPlayer,myBoard);
-//	GetBoardVec(oppPlayer,oppBoard);
-//	double bestVal = 0;
-//	GenerateAttacks(isAttacking,0,potAttacks.size(),bestVal, &bestAttacks, myBoard, oppBoard, potAttacks);
-//
-//	for(int i=0; i<bestAttacks.size(); i++) {
-//		if(bestAttacks[i]) {
-//			attacking.push_back(potAttacks[i]);
-//		}
-//	}
-//	delete myBoard;
-//	delete oppBoard;
-//	return attacking;
 	double value;
-	return ProposeAttacks(myPlayer,oppPlayer,value);
+	int recur=1;
+	return ProposeAttacks(myPlayer,oppPlayer,value, recur);
 }
 
-vector<Card*> TestControllerv2::ProposeAttacks(Player* attackPlayer, Player* blockPlayer, double &value) {
+vector<Card*> TestControllerv2::ProposeAttacks(Player* attackPlayer, Player* blockPlayer, double &value, int recur) {
 	vector<Card*> attacking;
 	vector<Card*> potAttacks;
 	potAttacks = GetPotentialAttackers(attackPlayer);
@@ -129,7 +99,7 @@ vector<Card*> TestControllerv2::ProposeAttacks(Player* attackPlayer, Player* blo
 	GetBoardVec(attackPlayer,attackBoard);
 	GetBoardVec(blockPlayer,blockBoard);
 	double bestVal = -0.1;
-	GenerateAttacks(isAttacking,0,potAttacks.size(),bestVal, &bestAttacks, attackBoard, blockBoard, potAttacks, attackPlayer, blockPlayer);
+	GenerateAttacks(isAttacking,0,potAttacks.size(),bestVal, &bestAttacks, attackBoard, blockBoard, potAttacks, attackPlayer, blockPlayer, recur);
 
 	for(int i=0; i<bestAttacks.size(); i++) {
 		if(bestAttacks[i]) {
@@ -141,29 +111,46 @@ vector<Card*> TestControllerv2::ProposeAttacks(Player* attackPlayer, Player* blo
 	return attacking;
 }
 
-double TestControllerv2::GenerateAttacks(vector<bool> isAttacking, int beg, int end, double& bestVal, vector<bool>* bestAttacks, double* attackState, double* blockState, vector<Card*> potAttacks, Player* attackPlayer, Player* blockPlayer) {
+double TestControllerv2::GenerateAttacks(vector<bool> isAttacking, int beg, int end, double& bestVal, vector<bool>* bestAttacks, double* attackState, double* blockState, vector<Card*> potAttacks, Player* attackPlayer, Player* blockPlayer, int recur) {
 	if(beg!=end) {
 		for(int i=0; i<2; i++) {
 			if(i==1) {
 				isAttacking[beg] = true;
 			}
 			double val = 0;
-			val = GenerateAttacks(isAttacking,beg+1,end,bestVal,bestAttacks,attackState,blockState,potAttacks,attackPlayer,blockPlayer);
+			val = GenerateAttacks(isAttacking,beg+1,end,bestVal,bestAttacks,attackState,blockState,potAttacks,attackPlayer,blockPlayer,recur);
 //			cout << "val = " << val << endl;
-			if(val>bestVal) {
+			if(val>=bestVal) {
 //				cout << val << " > " << bestVal << endl;
 				bestVal = val;
 				*bestAttacks = isAttacking;
+			}
+			else if(val==bestVal) {
+//			Break ties by having the most creatures attack
+				int newAtt=0;
+				int oldAtt=0;
+				for(int k=0; k<isAttacking.size(); k++) {
+					if(isAttacking[k]) {
+						newAtt++;
+					}
+					if(bestAttacks[0][k]) {
+						oldAtt++;
+					}
+				}
+				if(newAtt>oldAtt) {
+					bestVal = val;
+					*bestAttacks = isAttacking;
+				}
 			}
 		}
 		return 0.;
 	}
 	else {
-//		cout << "isAttacking: ";
-//		for(int i=0; i<isAttacking.size(); i++) {
-//			cout << isAttacking[i] << " ";
-//		}
-//		cout << endl;
+		cout << "isAttacking: ";
+		for(int i=0; i<isAttacking.size(); i++) {
+			cout << isAttacking[i] << " ";
+		}
+		cout << endl;
 		double value;
 		vector<Card*> attackers;
 		for(int i=0; i<isAttacking.size(); i++) {
@@ -171,37 +158,54 @@ double TestControllerv2::GenerateAttacks(vector<bool> isAttacking, int beg, int 
 				attackers.push_back(potAttacks[i]);
 			}
 		}
-		if(attackers.size()>0) {
-			ProposeBlocks(attackers,blockPlayer,attackPlayer,value);
-			if(value!=-1) {
-//			Convert from blocker's value to attackers value
-				value = 1-value;
-			}
-			else {
-//			If no possible blockers
-				double* blockBoardTemp = new double[totalCards];
-				double* attackBoardTemp = new double[totalCards];
-				memcpy(blockBoardTemp,blockState,totalCards*sizeof(double));
-				memcpy(attackBoardTemp,attackState,totalCards*sizeof(double));
-				double damage=0;
-				for(int j=0; j<attackers.size(); j++) {
-					damage += attackers[j]->GetPower();
-				}
-				value = AssessGameState(attackBoardTemp,blockBoardTemp,attackPlayer->lifeTotal,blockPlayer->lifeTotal-damage);
-				delete blockBoardTemp;
-				delete attackBoardTemp;
-			}
-		}
-		else {
-			double* blockBoardTemp = new double[totalCards];
-			double* attackBoardTemp = new double[totalCards];
-			memcpy(blockBoardTemp,blockState,totalCards*sizeof(double));
-			memcpy(attackBoardTemp,attackState,totalCards*sizeof(double));
-			value = AssessGameState(attackBoardTemp,blockBoardTemp,attackPlayer->lifeTotal,blockPlayer->lifeTotal);
-			delete blockBoardTemp;
-			delete attackBoardTemp;
-		}
-//		cout << "Value = " << value << endl;
+		ProposeBlocks(attackers,blockPlayer,attackPlayer,value,recur,true);
+		value = 1-value;
+//		if(attackers.size()>0) {
+//			ProposeBlocks(attackers,blockPlayer,attackPlayer,value,recur,true);
+//			if(value!=-1) {
+////			Convert from blocker's value to attackers value
+//				value = 1-value;
+//			}
+//			else {
+////			If no possible blockers
+//				double* blockBoardTemp = new double[totalCards];
+//				double* attackBoardTemp = new double[totalCards];
+//				memcpy(blockBoardTemp,blockState,totalCards*sizeof(double));
+//				memcpy(attackBoardTemp,attackState,totalCards*sizeof(double));
+//				int damage=0;
+//				for(int j=0; j<attackers.size(); j++) {
+//					damage += attackers[j]->GetPower();
+//				}
+//				if(recur>0) {
+//					PredictCrackback(blockPlayer,attackPlayer,blockBoardTemp,attackBoardTemp,attackers,damage,value);
+//					value = 1-value;
+//				}
+//				else {
+//					value = AssessGameState(attackBoardTemp,blockBoardTemp,attackPlayer->lifeTotal,blockPlayer->lifeTotal-damage);
+//				}
+//				delete blockBoardTemp;
+//				delete attackBoardTemp;
+//			}
+//		}
+//		else {
+////			There were no attacks
+//			double* blockBoardTemp = new double[totalCards];
+//			double* attackBoardTemp = new double[totalCards];
+//			memcpy(blockBoardTemp,blockState,totalCards*sizeof(double));
+//			memcpy(attackBoardTemp,attackState,totalCards*sizeof(double));
+//			if(recur>0) {
+//				vector<Card*> emptyAttack;
+//				PredictCrackback(blockPlayer,attackPlayer,blockBoardTemp,attackBoardTemp,emptyAttack,0,value);
+//				value = 1-value;
+//			}
+//			else {
+//				value = AssessGameState(attackBoardTemp,blockBoardTemp,attackPlayer->lifeTotal,blockPlayer->lifeTotal);
+//			}
+//			delete blockBoardTemp;
+//			delete attackBoardTemp;
+//		}
+
+		cout << "Attack Value = " << value << endl;
 		return value;
 	}
 }
@@ -215,56 +219,29 @@ vector<Planeswalker*> TestControllerv2::AssignAttacks(vector<Card*> attackers) {
 }
 
 vector<Card*> TestControllerv2::MakeBlocks(vector<Card*> targets) {
-//	vector<Card*> willBlock;
-//	if(targets.size()==0) {
-//		return willBlock;
-//	}
-//	targets.push_back(NULL);
-//	vector<Card*> potBlocks = GetPotentialBlockers();
-//	if(potBlocks.size()==0) {
-//		return willBlock;
-//	}
-//	vector< vector<int> > blocks;
-//	vector<int> empty;
-//	for(int i=0; i<targets.size(); i++) {
-//		blocks.push_back(empty);
-//	}
-//	vector<vector<int> > bestBlocks;
-//	double* myBoard = new double[CardList::size];
-//	double* oppBoard = new double[CardList::size];
-//	GetBoardVec(myPlayer,myBoard);
-//	GetBoardVec(oppPlayer,oppBoard);
-//	double bestVal = 0;
-//	GenerateBlocks(blocks,0,potBlocks.size(),bestVal, &bestBlocks, myBoard, oppBoard,targets, potBlocks);
-////	cout << "bestBlocks" << endl;
-////	for(int ii=0; ii<bestBlocks.size(); ii++) {
-////		for(int j=0; j<bestBlocks[ii].size(); j++) {
-////			cout << bestBlocks[ii][j] << " ";
-////		}
-////		cout << endl;
-////	}
-//	blockAssignment.clear();
-//	for(int i=0; i<bestBlocks.size()-1; i++) {
-//		for(int j=0; j<bestBlocks[i].size(); j++) {
-//			willBlock.push_back(potBlocks[bestBlocks[i][j]]);
-//			blockAssignment.push_back(targets[i]);
-//		}
-//	}
-//	delete myBoard;
-//	delete oppBoard;
-//	return willBlock;
 	double value;
-	return ProposeBlocks(targets,myPlayer,oppPlayer,value);
+	int recur = 1;
+	return ProposeBlocks(targets,myPlayer,oppPlayer,value,recur,false);
 }
 
-vector<Card*> TestControllerv2::ProposeBlocks(vector<Card*> targets, Player* blockPlayer, Player* attackPlayer, double& blockVal) {
+vector<Card*> TestControllerv2::ProposeBlocks(vector<Card*> targets, Player* blockPlayer, Player* attackPlayer, double& blockVal, int recur, bool needVal) {
 	vector<Card*> willBlock;
-	if(targets.size()==0) {
+//	No one is attacking!
+//	cout << "no attacks = " << (targets.size()==0) << endl;
+	if(targets.size()==0 && !needVal) {
 		return willBlock;
 	}
 	targets.push_back(NULL);
 	vector<Card*> potBlocks = GetPotentialBlockers(blockPlayer);
-	if(potBlocks.size()==0) {
+
+//	cout << "Left to block: " << endl;
+//	for(int i=0; i<potBlocks.size(); i++) {
+//		cout << potBlocks[i]->GetName() << endl;
+//	}
+
+//	No creatures can block!
+//	cout << "no blocks = " << (potBlocks.size()==0) << endl;
+	if(potBlocks.size()==0 && !needVal) {
 		blockVal=-1;
 		return willBlock;
 	}
@@ -278,34 +255,62 @@ vector<Card*> TestControllerv2::ProposeBlocks(vector<Card*> targets, Player* blo
 	double* attackBoard = new double[CardList::size];
 	GetBoardVec(blockPlayer,blockBoard);
 	GetBoardVec(attackPlayer,attackBoard);
-	double bestVal = -0.1;
-	GenerateBlocks(blocks,0,potBlocks.size(),bestVal, &bestBlocks, blockBoard, attackBoard,targets, potBlocks, blockPlayer, attackPlayer);
-//	cout << "bestBlocks:\t" << bestVal << endl;
-//	for(int ii=0; ii<bestBlocks.size(); ii++) {
-//		for(int j=0; j<bestBlocks[ii].size(); j++) {
-//			cout << bestBlocks[ii][j] << " ";
+//	cout << "no attackers? " << (targets.size()==1) << endl;
+//	cout << "no blockers? " << (potBlocks.size()==0) << endl;
+	if(targets.size()==1 || potBlocks.size()==0) {
+//		cout << "No blockers or attackers" << endl;
+        double* blockBoardTemp = new double[totalCards];
+        double* attackBoardTemp = new double[totalCards];
+        memcpy(blockBoardTemp,blockBoard,totalCards*sizeof(double));
+        memcpy(attackBoardTemp,attackBoard,totalCards*sizeof(double));
+        int damage=0;
+        for(int j=0; j<targets.size()-1; j++) {
+        	damage += targets[j]->GetPower();
+        }
+        if(recur>0) {
+        	targets.pop_back();
+        	PredictCrackback(blockPlayer,attackPlayer,blockBoardTemp,attackBoardTemp,targets,damage,blockVal);
+        	targets.push_back(NULL);
+//        	blockVal = 1-blockVal;
+        }
+        else {
+        	blockVal = AssessGameState(blockBoardTemp,attackBoardTemp,blockPlayer->lifeTotal-damage,attackPlayer->lifeTotal);
+        }
+        delete blockBoardTemp;
+        delete attackBoardTemp;
+//		cout<< "No decisions. Final block val = " << blockVal << endl;
+	}
+	else {
+		double bestVal = -0.1;
+		GenerateBlocks(blocks,0,potBlocks.size(),bestVal, &bestBlocks, blockBoard, attackBoard,targets, potBlocks, blockPlayer, attackPlayer, recur);
+//		cout << "bestBlocks:\t" << bestVal << endl;
+//		for(int ii=0; ii<bestBlocks.size(); ii++) {
+//			for(int j=0; j<bestBlocks[ii].size(); j++) {
+//				cout << bestBlocks[ii][j] << " ";
+//			}
+//			cout << endl;
 //		}
-//		cout << endl;
-//	}
-	blockVal = bestVal;
-	blockAssignment.clear();
-	for(int i=0; i<bestBlocks.size()-1; i++) {
-		for(int j=0; j<bestBlocks[i].size(); j++) {
-			willBlock.push_back(potBlocks[bestBlocks[i][j]]);
-			blockAssignment.push_back(targets[i]);
+		blockVal = bestVal;
+		blockAssignment.clear();
+		for(int i=0; i<bestBlocks.size()-1; i++) {
+			for(int j=0; j<bestBlocks[i].size(); j++) {
+				willBlock.push_back(potBlocks[bestBlocks[i][j]]);
+				blockAssignment.push_back(targets[i]);
+			}
 		}
 	}
+//	cout << "Block Value = " << blockVal << endl;
 	delete blockBoard;
 	delete attackBoard;
 	return willBlock;
 }
 
-double TestControllerv2::GenerateBlocks(vector<vector<int> > blocks, int beg, int end, double &bestVal, vector<vector<int> >* bestBlocks, double* blockState, double* attackState, vector<Card*> targets, vector<Card*> potBlocks, Player* blockPlayer, Player* attackPlayer) {
+double TestControllerv2::GenerateBlocks(vector<vector<int> > blocks, int beg, int end, double &bestVal, vector<vector<int> >* bestBlocks, double* blockState, double* attackState, vector<Card*> targets, vector<Card*> potBlocks, Player* blockPlayer, Player* attackPlayer, int recur) {
 	if(beg!=end) {
 		double val = 0;
 		for(int i=0; i<targets.size(); i++) {
 			blocks[i].push_back(beg);
-			val = GenerateBlocks(blocks,beg+1,end,bestVal,bestBlocks,blockState,attackState,targets,potBlocks,blockPlayer,attackPlayer);
+			val = GenerateBlocks(blocks,beg+1,end,bestVal,bestBlocks,blockState,attackState,targets,potBlocks,blockPlayer,attackPlayer,recur);
 			if(val>bestVal) {
 //				cout << val << " > " << bestVal << endl;
 				bestVal = val;
@@ -324,7 +329,7 @@ double TestControllerv2::GenerateBlocks(vector<vector<int> > blocks, int beg, in
 		return 0.;
 	}
 	else {
-//		cout << "blocks" << endl;
+//		cout << "blocks:" << endl;
 //		for(int ii=0; ii<blocks.size(); ii++) {
 //			for(int j=0; j<blocks[ii].size(); j++) {
 //				cout << blocks[ii][j] << " ";
@@ -338,6 +343,7 @@ double TestControllerv2::GenerateBlocks(vector<vector<int> > blocks, int beg, in
 			}
 		}
 		if(!validBlocks) {
+			cout << "Error: Invalid Blocks! We have a problem!" << endl;
 			return -1;
 		}
 		double val;
@@ -345,7 +351,7 @@ double TestControllerv2::GenerateBlocks(vector<vector<int> > blocks, int beg, in
 		double* attackBoardTemp = new double[totalCards];
 		memcpy(blockBoardTemp,blockState,totalCards*sizeof(double));
 		memcpy(attackBoardTemp,attackState,totalCards*sizeof(double));
-		double* damage = new double(0);
+		int* damage = new int(0);
 		for(int i=0; i<blocks.size()-1; i++) {
 			vector<Card*> theBlockers;
 			for(int j=0; j<blocks[i].size(); j++) {
@@ -366,15 +372,70 @@ double TestControllerv2::GenerateBlocks(vector<vector<int> > blocks, int beg, in
 			PredictDamage(targets[i],theBlockers,attackBoardTemp,blockBoardTemp,damage);
 //			cout << "Damage = " << *damage << endl;
 		}
-//		cout << "Final life = " << blockPlayer->lifeTotal-*damage << endl;
-//		cout << "Attack life = " << attackPlayer->lifeTotal << endl;
-		val = AssessGameState(blockBoardTemp,attackBoardTemp,blockPlayer->lifeTotal-*damage,attackPlayer->lifeTotal);
-//		cout << "Value = " << val << endl;
+//		If recur we want to generate new Players based on boardTemps and account for crack back
+		if(recur>0) {
+			targets.pop_back();
+			PredictCrackback(blockPlayer,attackPlayer,blockBoardTemp,attackBoardTemp,targets,*damage,val);
+			targets.push_back(NULL);
+		}
+		else {
+			val = AssessGameState(blockBoardTemp,attackBoardTemp,blockPlayer->lifeTotal-*damage,attackPlayer->lifeTotal);
+		}
+//		cout<< "Block val = " << val << endl;
 		delete blockBoardTemp;
 		delete attackBoardTemp;
 		delete damage;
 		return val;
 	}
+}
+
+//	Returns value for blocking player assuming they all out attack next turn
+void TestControllerv2::PredictCrackback(Player* blockPlayer,Player* attackPlayer,double* blockBoardTemp,double* attackBoardTemp,vector<Card*> attackers,int damage,double& val) {
+//	cout << "Predicting Crackback" << endl;
+	if((blockPlayer->lifeTotal-damage)<=0) {
+//		cout << "Already dead!" << endl;
+		val = 0.0;
+		return;
+	}
+	int* tappedAttacks = new int[totalCards];
+	for(int k=0; k<totalCards; k++) {
+		tappedAttacks[k] = 0;
+	}
+//		Block player will untap all before the crackback
+	Player* possibleBlockPlayer = BoardToPlayer(blockBoardTemp, tappedAttacks, blockPlayer->lifeTotal-damage);
+	for(int i=0; i<attackPlayer->bf->cardVec.size(); i++) {
+		if(find(attackers.begin(),attackers.end(), attackPlayer->bf->cardVec[i])==attackers.end()) {
+//			If the card is not attacking add it to tappedAttacks (which currently represents untapped attacks)
+			tappedAttacks[nameToIndex[attackPlayer->bf->cardVec[i]->GetName()]]++;
+//			cout << "Untapped " << attackPlayer->bf->cardVec[i]->GetName() << endl;
+		}
+	}
+//		Now convert from untapped creatures to remaining tapped creatures
+	for(int k=0; k<totalCards; k++) {
+		tappedAttacks[k] = attackBoardTemp[k] - tappedAttacks[k];
+	}
+	Player* possibleAttackPlayer = BoardToPlayer(attackBoardTemp, tappedAttacks, attackPlayer->lifeTotal);
+//	vector<Card*> potAttacks = GetPotentialAttackers(possibleBlockPlayer);
+//	cout << "Crackback is: " << endl;
+//	for(int i=0; i<possibleBlockPlayer->bf->cardVec.size(); i++) {
+//		cout << possibleBlockPlayer->bf->cardVec[i]->GetName() << endl;
+//	}
+//	vector<Card*> potBlocks = GetPotentialBlockers(possibleAttackPlayer);
+//	cout << "Left to block: " << endl;
+//	for(int i=0; i<potBlocks.size(); i++) {
+//		cout << potBlocks[i]->GetName() << endl;
+//	}
+//	cout << "bf tapped?: " << endl;
+//	for(int i=0; i<possibleAttackPlayer->bf->cardVec.size(); i++) {
+//		cout << possibleAttackPlayer->bf->cardVec[i]->GetName() << " " << possibleAttackPlayer->bf->cardVec[i]->tapped << endl;
+//	}
+
+	ProposeBlocks(GetPotentialAttackers(possibleBlockPlayer),possibleAttackPlayer,possibleBlockPlayer,val,0,true);
+//		Convert from attack player value to block player value
+	val = 1-val;
+	delete tappedAttacks;
+	delete possibleBlockPlayer;
+	delete possibleAttackPlayer;
 }
 
 vector<Card*> TestControllerv2::AssignBlocks(vector<Card*> blockers, vector<Card*> attackers) {
@@ -390,51 +451,6 @@ vector<Card*> TestControllerv2::AssignBlocks(vector<Card*> blockers, vector<Card
 }
 
 vector<int> TestControllerv2::OrderBlocks(Card* attacker, vector<Card*> blockers) {
-//	vector<int> ordering;
-////	First, add unkillables to end of list
-//	int blockersLeft = blockers.size();
-//	vector<int> remaining;
-//	for(int i=0; i<blockers.size(); i++) {
-//		if(blockers[i]->toughness>attacker->power) {
-//			ordering.push_back(blockersLeft-1);
-//			blockersLeft--;
-//		}
-//		else {
-//			remaining.push_back(i);
-//			ordering.push_back(-1);
-//		}
-//	}
-////	Only zero or one killable creature, so no decisions
-//	if(blockersLeft==0) {
-//		return ordering;
-//	}
-//	else if(blockersLeft==1) {
-//		ordering[remaining[0]]=0;
-//		return ordering;
-//	}
-////	Otherwise, we need to consider permutations to kill the most value
-//	double* myBoard = new double[CardList::size];
-//	double* oppBoard = new double[CardList::size];
-//	GetBoardVec(myPlayer,myBoard);
-//	GetBoardVec(oppPlayer,oppBoard);
-//	double bestVal = 0;
-//	vector<int> bestOrdering;
-//	vector<int> miniOrdering;
-//	for(int i=0; i<blockersLeft; i++) {
-//		miniOrdering.push_back(i);
-//	}
-////	This is a mess!! But it should work
-//	PermuteBlocks(miniOrdering, 0, blockersLeft, bestVal, &bestOrdering, ordering, remaining, myBoard, oppBoard, attacker, blockers);
-////	cout << "bestOrdering is: " << endl;
-////	for(int i=0; i<bestOrdering.size(); i++) {
-////		cout << bestOrdering[i] << endl;
-////	}
-//	for(int i=0; i<blockersLeft; i++) {
-//		ordering[remaining[i]] = bestOrdering[i];
-//	}
-//	delete myBoard;
-//	delete oppBoard;
-//	return ordering;
 	double value;
 	return ProposeBlockOrder(attacker, blockers, myPlayer, oppPlayer, value);
 }
@@ -525,7 +541,7 @@ double TestControllerv2::PermuteBlocks(vector<int> ordering, int beg, int end, d
 			for ( d = totalOrdering[s]; d < s; d = totalOrdering[d] ) ;
 			if ( d == s ) while ( d = totalOrdering[d], d != s ) swap(blockers[s], blockers[d] );
 		}
-		double damage = 0;
+		int damage = 0;
 		PredictDamage(attacker,blockers,blockBoardTemp,attackBoardTemp, &damage);
 		double value = AssessGameState(blockBoardTemp,attackBoardTemp, blockPlayer->lifeTotal,attackPlayer->lifeTotal);
 		delete blockBoardTemp;
@@ -550,10 +566,10 @@ vector<int> TestControllerv2::AssignDamage(Card* attacker,vector<Card*> blockers
 	return damageAssigned;
 }
 
-bool TestControllerv2::PredictDamage(Card* attacker, vector<Card*> blockers, double* attackState, double* blockState, double* damage) {
+bool TestControllerv2::PredictDamage(Card* attacker, vector<Card*> blockers, double* attackState, double* blockState, int* damage) {
 	bool creatureDead = false;
-	double damageLeft = attacker->power;
-	double blockerDamage = 0;
+	int damageLeft = attacker->power;
+	int blockerDamage = 0;
 	if(blockers.size()==0) {
 		*damage += damageLeft;
 	}
@@ -585,7 +601,7 @@ vector<Card*> TestControllerv2::ChooseDiscards(int nDiscard) {
 		}
 		return discards;
 	}
-	vector<Card*> landsDown = LandsOnTable();
+	vector<Card*> landsDown = LandsOnTable(myPlayer);
 	vector<Card*> landsInHand = LandsInHand();
 	vector<Card*> nonLandsInHand = NonLandsInHand();
 	if(landsDown.size()<=1) {
@@ -635,11 +651,11 @@ vector<Card*> TestControllerv2::LandsInHand() {
 	return landHand;
 }
 
-vector<Card*> TestControllerv2::LandsOnTable() {
+vector<Card*> TestControllerv2::LandsOnTable(Player* thePlayer) {
 	vector<Card*> landsPlayed;
-	for(int i=0; i<myPlayer->bf->cardVec.size(); i++) {
-		if(myPlayer->bf->cardVec[i]->isLand) {
-			landsPlayed.push_back(myPlayer->bf->cardVec[i]);
+	for(int i=0; i<thePlayer->bf->cardVec.size(); i++) {
+		if(thePlayer->bf->cardVec[i]->isLand) {
+			landsPlayed.push_back(thePlayer->bf->cardVec[i]);
 		}
 	}
 	return landsPlayed;
@@ -697,6 +713,28 @@ double* TestControllerv2::GetBoardVec(Player* thePlayer, double* boardVec) {
 	}
 	return boardVec;
 }
+
+Player* TestControllerv2::BoardToPlayer(double* seedBoardState, int* tappedVec, int seedLife) {
+	Player * newPlayer = new Player();
+	newPlayer->lifeTotal = seedLife;
+	for(int i=0; i<totalCards; i++) {
+		for(int j=0; j<seedBoardState[i]; j++) {
+			Card* newCard = CardSelector::NewCard(CardList::cardName(i));
+			newPlayer->bf->cardVec.push_back(newCard);
+			newCard->curLoc = newPlayer->bf;
+			newCard->thePlayer = newPlayer;
+			newCard->summoningSick = false;
+//			cout << "Adding " << newCard->GetName() << endl;
+			if(tappedVec[i]>0) {
+				newCard->tapped=true;
+				tappedVec[i]--;
+//				cout << "Tapping " << newCard->GetName() << endl;
+			}
+		}
+	}
+	return newPlayer;
+}
+
 
 bool TestControllerv2::Mulligan(bool isFirst) {
 	int numLands = LandsInHand().size();
