@@ -29,7 +29,8 @@ CPP_SRCS += \
 ../StateBasedActionQueue.cpp \
 ../Target.cpp \
 ../TestController.cpp \
-../TestControllerv2.cpp 
+../TestControllerv2.cpp \
+../TestControllerv3.cpp 
 
 C_UPPER_SRCS += \
 ../Random.C \
@@ -63,6 +64,7 @@ OBJS += \
 ./Target.o \
 ./TestController.o \
 ./TestControllerv2.o \
+./TestControllerv3.o \
 ./main.o 
 
 CPP_DEPS += \
@@ -91,7 +93,8 @@ CPP_DEPS += \
 ./StateBasedActionQueue.d \
 ./Target.d \
 ./TestController.d \
-./TestControllerv2.d 
+./TestControllerv2.d \
+./TestControllerv3.d 
 
 C_UPPER_DEPS += \
 ./Random.d \

@@ -1,6 +1,8 @@
 /*
  * Playable.h
  *
+ *  Playable objects are cards and activated abilities
+ *
  *  Created on: Nov 26, 2013
  *      Author: dstuck
  */

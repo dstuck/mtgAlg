@@ -10,6 +10,7 @@
 
 #include <map>
 #include <algorithm>
+#include <cmath>
 #include "Cardlist.h"
 #include "Controller.h"
 #include "Player.h"
@@ -38,7 +39,7 @@ public:
 	double* GetBoardVec(Player*,double*);
 	double AssessGameState(double*, double*, double, double);
 	double ModifyByLife(double, double);
-	vector<Card*> ProposeAttacks(Player*, Player*, double&, int=0);
+	vector<Card*> ProposeAttacks(Player*, Player*, double&, int=0, bool=false);
 	vector<Card*> ProposeBlocks(vector<Card*>, Player*, Player*, double&,int=0,bool=false);
 	vector<int> ProposeBlockOrder(Card*,vector<Card*>, Player*, Player*, double&);
 //	Predict results of combat of attacker with blockers and modify attackerState and blockerState with the result return false if no change

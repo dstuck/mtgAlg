@@ -303,12 +303,19 @@ void BasicGame::Combat() {
 			invalidBlockers = false;
 			blockers = players[(activePlayer+1)%2]->control->MakeBlocks(attackers);
 			blockTargets = players[(activePlayer+1)%2]->control->AssignBlocks(blockers,attackers);
-			for(int i=0; i<blockers.size(); i++) {
-				if(!blockers[i]->CanBlock(blockTargets[i])) {
-					cout << "Not all blockers can block! Try again!" << endl;
-					invalidBlockers = true;
-				}
-			}
+                        if(blockTargets.size()!=blockers.size()) {
+                            cout << "Misassigned block targets! Try again!" << endl;
+                            cout << "blockTargets.size() = " << blockTargets.size() << " != " << blockers.size() << endl;
+                            invalidBlockers = true;
+                        }
+                        else {
+                            for(int i=0; i<blockers.size(); i++) {
+                                    if(!blockers[i]->CanBlock(blockTargets[i])) {
+                                            cout << "Not all blockers can block! Try again!" << endl;
+                                            invalidBlockers = true;
+                                    }
+                            }
+                        }
 		}
 		for(int i=0; i<blockers.size(); i++) {
 			if(abs(noisy)>1) {

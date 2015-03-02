@@ -20,8 +20,8 @@ HumanController::~HumanController() {
 }
 
 vector<Card*> HumanController::GetDeck() {
-	return DeckList::VanillaGreen();
-//	return DeckList::FrenchVanillaBlue();
+//	return DeckList::VanillaGreen();
+	return DeckList::FrenchVanillaBlue();
 }
 
 bool HumanController::Mulligan(bool isFirst) {
